@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="../static/css/bootstrap.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" /> 
+    <style>
+        .form-control {
+    box-shadow: none !important; 
+}
+
+.form-select {
+    box-shadow: none !important; 
+}
+    </style>
+</head>
+
+<body>
+
+    <div class="d-flex flex-column min-vh-100">
+
+        <nav class="navbar navbar-expand-lg bg-success border-success border-bottom">
+            <div class="container-fluid my-1 mx-5">
+                <a class="navbar-brand text-light fw-bold fs-5" href="#">
+                    <i class="fa-solid fa-gears"></i> QUANTUM CRYPOGRAPHY</a>
+                <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fa-solid fa-bars text-light"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-1"> 
+                        <li class="nav-item">
+                          <a class="nav-link text-white fw-bold" href="/viewarea">Area Details</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link text-white fw-bold  text-decoration-underline link-offset-2 active" href="/consumption">Consumption</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link text-white fw-bold" href="/logout">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+ 
+
+        <div class="container bg-white my-4">
+
+            <div class="d-flex mt-5 mb-3">
+                <h3 class="text-success-emphasis link-offset-1 text-decoration-underline flex-grow-1 flex-md-grow-0">
+                    Consumption Graph
+                </h3>
+            </div>
+
+            <div class="row justify-content-center mb-3 mt-4">
+                <div class="col-md-12">
+                   
+                    <div id="chart"></div>
+
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <script src="../static/js/jquery.js"></script>
+    <script src="../static/js/bootstrap.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script> 
+    <script>
+        // Sample data (you would populate this with your actual data)
+        const data = [
+        {% for i in data %}
+            { date: '{{i[0]}}', houses: {{i[1]}}, hospitals: {{i[2]}}, companies: {{i[3]}} },
+        {% endfor %}
+        ];
+
+        // Extracting data for x-axis and y-axis
+        const dates = data.map(item => item.date);
+        const houses = data.map(item => item.houses);
+        const hospitals = data.map(item => item.hospitals);
+        const companies = data.map(item => item.companies);
+
+        // Creating the chart
+        var options = {
+            chart: {
+                type: 'bar'
+            },
+            series: [{
+                name: 'Houses',
+                data: houses
+            }, {
+                name: 'Hospitals',
+                data: hospitals
+            }, {
+                name: 'Companies',
+                data: companies
+            }],
+            xaxis: {
+                categories: dates
+            }
+        }
+
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+
+        chart.render();
+    </script>
+
+</body>
+
+
+</html>
